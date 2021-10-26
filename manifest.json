@@ -1,10 +1,10 @@
 {
-  "name": "service-example",
-  "vendor": "vtex",
-  "version": "0.2.0",
-  "title": "Service Example",
-  "description": "Reference app for VTEX IO Services",
-  "mustUpdateAt": "2018-01-04",
+  "name": "example-rest",
+  "vendor": "decorest",
+  "version": "0.0.1",
+  "title": "example-rest",
+  "description": "app de ejemplo",
+  "mustUpdateAt": "2022-01-04",
   "categories": [],
   "dependencies": {},
   "builders": {
