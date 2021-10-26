@@ -1,5 +1,5 @@
 import type { ClientsConfig, ServiceContext, RecorderState } from '@vtex/api'
-import { LRUCache, method, Service } from '@vtex/api'
+import { LRUCache, method, Service, UserInputError } from '@vtex/api'
 
 import { Clients } from './clients'
 import { status } from './middlewares/status'
@@ -48,5 +48,31 @@ export default new Service({
     status: method({
       GET: [validate, status],
     }),
+    name: method({
+      GET: [saludo],
+    }),
   },
 })
+
+export async function saludo(ctx: Context, next: () => Promise<any>) {
+  const {
+    vtex: {
+      route: { params },
+    },
+  } = ctx
+
+  console.info('Received params:', params)
+
+  const { name } = params
+
+  if (!name) {
+    throw new UserInputError('Code is required') // Wrapper for a Bad Request (400) HTTP Error. Check others in https://github.com/vtex/node-vtex-api/blob/fd6139349de4e68825b1074f1959dd8d0c8f4d5b/src/errors/index.ts
+  }
+
+  const nombre = name as string
+
+  ctx.body.greatings = `hola ${nombre}`
+  ctx.body.code = 200
+
+  await next()
+}
