@@ -1,7 +1,7 @@
 {
   "name": "example-rest",
   "vendor": "decorest",
-  "version": "0.0.3-beta.0",
+  "version": "0.0.4-beta.0",
   "title": "example-rest",
   "description": "app de ejemplo",
   "mustUpdateAt": "2022-01-04",
