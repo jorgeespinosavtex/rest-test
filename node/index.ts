@@ -71,8 +71,8 @@ export async function saludo(ctx: Context, next: () => Promise<any>) {
 
   const nombre = name as string
 
-  ctx.body.greatings = `hola ${nombre}`
-  ctx.body.code = 200
+  ctx.body = { greatings: `hola ${nombre}` }
+  ctx.state.code = 200
 
   await next()
 }
