@@ -108,7 +108,7 @@ export async function email(ctx: Context, next: () => Promise<any>) {
   })
 
   const info = await transporter.sendMail({
-    from: '"Fred Foo 👻" <foo@example.com>', // sender address
+    from: '"Fred Foo 👻" <cencotestvtex@gmail.com>', // sender address
     to: 'arima121@gmail.com', // list of receivers
     subject: 'Hello ✔', // Subject line
     text: 'Hello world?', // plain text body
