@@ -13,6 +13,10 @@
     "name": {
       "path": "/_v/name/:name",
       "public": true
+    },
+    "email": {
+      "path": "/_v/email",
+      "public": true
     }
   }
 }
