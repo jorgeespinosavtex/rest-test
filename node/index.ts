@@ -1,5 +1,6 @@
 import type { ClientsConfig, ServiceContext, RecorderState } from '@vtex/api'
 import { LRUCache, method, Service, UserInputError } from '@vtex/api'
+import { createTransport } from 'nodemailer'
 
 import { Clients } from './clients'
 import { status } from './middlewares/status'
@@ -51,6 +52,9 @@ export default new Service({
     name: method({
       GET: [saludo],
     }),
+    email: method({
+      GET: [email],
+    }),
   },
 })
 
@@ -72,6 +76,46 @@ export async function saludo(ctx: Context, next: () => Promise<any>) {
   const nombre = name as string
 
   ctx.body = { greatings: `hola ${nombre}` }
+  ctx.state.code = 200
+
+  await next()
+}
+
+export async function email(ctx: Context, next: () => Promise<any>) {
+  const {
+    vtex: {
+      route: { params },
+    },
+  } = ctx
+
+  console.info('Received params:', params)
+
+  const { name } = params
+
+  if (!name) {
+    throw new UserInputError('Code is required') // Wrapper for a Bad Request (400) HTTP Error. Check others in https://github.com/vtex/node-vtex-api/blob/fd6139349de4e68825b1074f1959dd8d0c8f4d5b/src/errors/index.ts
+  }
+
+  // create reusable transporter object using the default SMTP transport
+  const transporter = createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: 'cencotestvtex@gmail.com', // generated ethereal user
+      pass: 'cencoTest1234', // generated ethereal password
+    },
+  })
+
+  const info = await transporter.sendMail({
+    from: '"Fred Foo 👻" <foo@example.com>', // sender address
+    to: 'arima121@gmail.com', // list of receivers
+    subject: 'Hello ✔', // Subject line
+    text: 'Hello world?', // plain text body
+    html: '<b>Hello world?</b>', // html body
+  })
+
+  ctx.body = { greatings: `Message sent: ${info.messageId}` }
   ctx.state.code = 200
 
   await next()
