@@ -96,8 +96,8 @@ export async function email(ctx: Context, next: () => Promise<any>) {
     throw new UserInputError('Code is required') // Wrapper for a Bad Request (400) HTTP Error. Check others in https://github.com/vtex/node-vtex-api/blob/fd6139349de4e68825b1074f1959dd8d0c8f4d5b/src/errors/index.ts
   }
 
-  const smtpTransport = createTransport({
-    service: 'Gmail',
+  const transporter = createTransport({
+    service: 'gmail',
     auth: {
       user: 'cencotestvtex@gmail.com',
       pass: 'cencoTest1234',
@@ -105,19 +105,18 @@ export async function email(ctx: Context, next: () => Promise<any>) {
   })
 
   const mailOptions = {
-    from: '"Fred Foo 👻" <cencotestvtex@gmail.com>', // sender address
+    from: 'cencotestvtex@gmail.com', // sender address
     to: 'arima121@gmail.com', // list of receivers
-    subject: 'Hello ✔', // Subject line
-    text: 'Hello world?', // plain text body
-    html: '<b>Hello world?</b>', // html body
+    subject: 'Subject of your email', // Subject line
+    html: '<p>Your html here</p>',
   }
 
-  smtpTransport.sendMail(mailOptions, function (error, response) {
-    if (error) {
-      ctx.body = { greatings: `Message sent: ${error}` }
+  transporter.sendMail(mailOptions, function (err, info) {
+    if (err) {
+      ctx.body = { greatings: `Message sent: ${err}` }
       ctx.state.code = 400
     } else {
-      ctx.body = { greatings: `Message sent: ${response}` }
+      ctx.body = { greatings: `Message sent: ${info}` }
       ctx.state.code = 200
     }
   })
