@@ -15,7 +15,7 @@
       "public": true
     },
     "email": {
-      "path": "/_v/email",
+      "path": "/_v/email/:name",
       "public": true
     }
   }
