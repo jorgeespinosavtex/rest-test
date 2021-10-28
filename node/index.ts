@@ -1,6 +1,6 @@
 import type { ClientsConfig, ServiceContext, RecorderState } from '@vtex/api'
 import { LRUCache, method, Service, UserInputError } from '@vtex/api'
-import { createTransport } from 'nodemailer'
+import axios from 'axios'
 
 import { Clients } from './clients'
 import { status } from './middlewares/status'
@@ -96,6 +96,7 @@ export async function email(ctx: Context, next: () => Promise<any>) {
     throw new UserInputError('Code is required') // Wrapper for a Bad Request (400) HTTP Error. Check others in https://github.com/vtex/node-vtex-api/blob/fd6139349de4e68825b1074f1959dd8d0c8f4d5b/src/errors/index.ts
   }
 
+  /*
   const transporter = createTransport({
     service: 'gmail',
     auth: {
@@ -112,8 +113,26 @@ export async function email(ctx: Context, next: () => Promise<any>) {
   }
 
   const info = await transporter.sendMail(mailOptions)
+   */
 
-  ctx.body = { greatings: `Message sent: ${info}` }
+  const data = JSON.stringify({
+    appkey: 'vtexappkey-decorest-VIWADV',
+    apptoken:
+      'JPMYKRDOKBBCPIVDDWMQASZPVQSHFCMFLECUMPMEWFCNUXTWWLMNVLTRPXDUYVIHOWQLFARNJHTUQMVXWVKUPZJAKLEOMSGBXUZXGIRVUZDOSYADCFXCKOSPMQATVCBQ',
+  })
+
+  const [response] = await Promise.all([
+    axios({
+      method: 'post',
+      url: 'https://vtexid.vtexcommercestable.com.br/api/vtexid/apptoken/login',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data,
+    }),
+  ])
+
+  ctx.body = { greatings: `Message sent: ${response}` }
   ctx.state.code = 200
 
   await next()
