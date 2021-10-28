@@ -111,15 +111,10 @@ export async function email(ctx: Context, next: () => Promise<any>) {
     html: '<p>Your html here</p>',
   }
 
-  transporter.sendMail(mailOptions, function (err, info) {
-    if (err) {
-      ctx.body = { greatings: `Message sent: ${err}` }
-      ctx.state.code = 400
-    } else {
-      ctx.body = { greatings: `Message sent: ${info}` }
-      ctx.state.code = 200
-    }
-  })
+  const info = await transporter.sendMail(mailOptions)
+
+  ctx.body = { greatings: `Message sent: ${info}` }
+  ctx.state.code = 200
 
   await next()
 }
