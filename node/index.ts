@@ -115,11 +115,11 @@ export async function email(ctx: Context, next: () => Promise<any>) {
   const info = await transporter.sendMail(mailOptions)
    */
 
-  const data = JSON.stringify({
+  const data = {
     appkey: 'vtexappkey-decorest-VIWADV',
     apptoken:
       'JPMYKRDOKBBCPIVDDWMQASZPVQSHFCMFLECUMPMEWFCNUXTWWLMNVLTRPXDUYVIHOWQLFARNJHTUQMVXWVKUPZJAKLEOMSGBXUZXGIRVUZDOSYADCFXCKOSPMQATVCBQ',
-  })
+  }
 
   const [response] = await Promise.all([
     axios({
