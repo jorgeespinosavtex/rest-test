@@ -6,7 +6,7 @@ import { Clients } from './clients'
 import { status } from './middlewares/status'
 import { validate } from './middlewares/validate'
 
-const TIMEOUT_MS = 80000
+const TIMEOUT_MS = 8000
 
 // Create a LRU memory cache for the Status client.
 // The @vtex/api HttpClient respects Cache-Control headers and uses the provided cache.
@@ -90,30 +90,7 @@ export async function email(ctx: Context, next: () => Promise<any>) {
 
   console.info('Received params:', params)
 
-  const { name } = params
-
-  if (!name) {
-    throw new UserInputError('Code is required') // Wrapper for a Bad Request (400) HTTP Error. Check others in https://github.com/vtex/node-vtex-api/blob/fd6139349de4e68825b1074f1959dd8d0c8f4d5b/src/errors/index.ts
-  }
-
-  /*
-  const transporter = createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'cencotestvtex@gmail.com',
-      pass: 'cencoTest1234',
-    },
-  })
-
-  const mailOptions = {
-    from: 'cencotestvtex@gmail.com', // sender address
-    to: 'arima121@gmail.com', // list of receivers
-    subject: 'Subject of your email', // Subject line
-    html: '<p>Your html here</p>',
-  }
-
-  const info = await transporter.sendMail(mailOptions)
-   */
+  // const { name } = params
 
   const data = {
     appkey: 'vtexappkey-decorest-VIWADV',
@@ -131,7 +108,9 @@ export async function email(ctx: Context, next: () => Promise<any>) {
     { headers }
   )
 
-  ctx.body = { greatings: `Message sent: ${response}` }
+  const nombre = response.data as string
+
+  ctx.body = { greatings: `Message sent: ${nombre}` }
   ctx.state.code = 200
 
   await next()
