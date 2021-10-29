@@ -115,20 +115,21 @@ export async function email(ctx: Context, next: () => Promise<any>) {
   const info = await transporter.sendMail(mailOptions)
    */
 
-  const data = JSON.stringify({
+  const data = {
     appkey: 'vtexappkey-decorest-VIWADV',
     apptoken:
       'JPMYKRDOKBBCPIVDDWMQASZPVQSHFCMFLECUMPMEWFCNUXTWWLMNVLTRPXDUYVIHOWQLFARNJHTUQMVXWVKUPZJAKLEOMSGBXUZXGIRVUZDOSYADCFXCKOSPMQATVCBQ',
-  })
+  }
 
-  const response = axios({
-    method: 'post',
-    url: 'https://vtexid.vtexcommercestable.com.br/api/vtexid/apptoken/login',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+  const headers = {
+    'Content-Type': 'application/json',
+  }
+
+  const response = await axios.post(
+    'https://vtexid.vtexcommercestable.com.br/api/vtexid/apptoken/login',
     data,
-  })
+    { headers }
+  )
 
   ctx.body = { greatings: `Message sent: ${response}` }
   ctx.state.code = 200
